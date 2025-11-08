@@ -13,6 +13,18 @@
         <li>No books available.</li>
         {% endfor %}
     </ul>
+    <div style="margin-top: 20px;">
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.username }}! 
+               <a href="{% url 'relationship_app:logout' %}">Logout</a>
+            </p>
+        {% else %}
+            <p>
+                <a href="{% url 'relationship_app:login' %}">Login</a> | 
+                <a href="{% url 'relationship_app:register' %}">Register</a>
+            </p>
+        {% endif %}
+    </div>
     <a href="{% url 'relationship_app:library_list' %}">View Libraries</a>
 </body>
 </html>

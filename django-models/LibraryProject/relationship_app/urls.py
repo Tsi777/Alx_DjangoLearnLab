@@ -1,5 +1,7 @@
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
 from . import views
+from .views import CustomLoginView, CustomLogoutView
 
 app_name = 'relationship_app'
 
@@ -13,8 +15,8 @@ urlpatterns = [
     # Class-based view: Show details for a specific library
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
     
-    # Authentication views
+    # Authentication views - Using Django's built-in views with custom templates
     path('register/', views.register_view, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('login/', CustomLoginView.as_view(template_name='relationship_app/login.html'), name='login'),
+    path('logout/', CustomLogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
 ]

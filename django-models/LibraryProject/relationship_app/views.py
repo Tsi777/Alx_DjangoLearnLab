@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from .models import Book, Library
 
@@ -23,7 +23,7 @@ class LibraryListView(ListView):
     template_name = 'relationship_app/library_list.html'
     context_object_name = 'libraries'
 
-# User Registration View
+# User Registration View (keep as function-based)
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -36,29 +36,22 @@ def register_view(request):
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-# User Login View
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f'You are now logged in as {username}.')
-                return redirect('relationship_app:list_books')
-            else:
-                messages.error(request, 'Invalid username or password.')
-        else:
-            messages.error(request, 'Invalid username or password.')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'relationship_app/login.html', {'form': form})
+# Custom Login View that extends Django's LoginView
+class CustomLoginView(LoginView):
+    template_name = 'relationship_app/login.html'
+    
+    def form_valid(self, form):
+        messages.info(self.request, f'You are now logged in as {form.get_user().username}.')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid username or password.')
+        return super().form_invalid(form)
 
-# User Logout View
-@login_required
-def logout_view(request):
-    logout(request)
-    messages.info(request, 'You have successfully logged out.')
-    return redirect('relationship_app:list_books')
+# Custom Logout View that extends Django's LogoutView
+class CustomLogoutView(LogoutView):
+    template_name = 'relationship_app/logout.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        messages.info(request, 'You have successfully logged out.')
+        return super().dispatch(request, *args, **kwargs)

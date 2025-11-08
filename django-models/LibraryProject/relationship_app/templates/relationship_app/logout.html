@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logged Out</title>
+</head>
+<body>
+    <h1>Logged Out</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div style="color: green;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <p>You have been successfully logged out.</p>
+    <a href="{% url 'relationship_app:login' %}">Login again</a> | 
+    <a href="{% url 'relationship_app:list_books' %}">Back to Books</a>
+</body>
+</html>

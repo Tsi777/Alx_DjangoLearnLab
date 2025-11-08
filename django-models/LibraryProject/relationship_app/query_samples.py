@@ -55,9 +55,9 @@ def create_sample_data():
     author2 = Author.objects.create(name="Ngũgĩ wa Thiong'o")
     
     # Create books
-    book1 = Book.objects.create(title="Things Fall Apart", author=author1)
-    book2 = Book.objects.create(title="Arrow of God", author=author1)
-    book3 = Book.objects.create(title="A Grain of Wheat", author=author2)
+    book1 = Book.objects.create(title="Things Fall Apart", author=author1, publication_year=1958)
+    book2 = Book.objects.create(title="Arrow of God", author=author1, publication_year=1964)
+    book3 = Book.objects.create(title="A Grain of Wheat", author=author2, publication_year=1967)
     
     # Create library
     library = Library.objects.create(name="African Literature Library")

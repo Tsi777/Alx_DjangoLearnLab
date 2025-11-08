@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, {{ user.username }}! You have Admin privileges.</p>
+    
+    <h2>Admin Features:</h2>
+    <ul>
+        <li>Manage all users and their roles</li>
+        <li>Access system settings</li>
+        <li>View system logs</li>
+        <li>Manage all libraries and books</li>
+    </ul>
+    
+    <nav>
+        <a href="{% url 'relationship_app:list_books' %}">View Books</a> |
+        <a href="{% url 'relationship_app:library_list' %}">View Libraries</a> |
+        <a href="{% url 'relationship_app:logout' %}">Logout</a>
+    </nav>
+</body>
+</html>

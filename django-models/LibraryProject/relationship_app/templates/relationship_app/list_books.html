@@ -16,7 +16,17 @@
     <div style="margin-top: 20px;">
         {% if user.is_authenticated %}
             <p>Welcome, {{ user.username }}! 
+               (Role: {{ user.userprofile.role }})
                <a href="{% url 'relationship_app:logout' %}">Logout</a>
+            </p>
+            <p>
+                {% if user.userprofile.role == 'Admin' %}
+                    <a href="{% url 'relationship_app:admin_view' %}">Admin Dashboard</a> |
+                {% elif user.userprofile.role == 'Librarian' %}
+                    <a href="{% url 'relationship_app:librarian_view' %}">Librarian Dashboard</a> |
+                {% elif user.userprofile.role == 'Member' %}
+                    <a href="{% url 'relationship_app:member_view' %}">Member Dashboard</a> |
+                {% endif %}
             </p>
         {% else %}
             <p>
